@@ -19,7 +19,7 @@ class Tag extends Model
     {
 
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::random(7). "-" .Str::slug($value);
+        $this->attributes['slug'] = str::slug(str::random(5) .''.$this->attributes['title']);
     }
 //relations
 

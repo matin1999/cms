@@ -11,6 +11,8 @@ class Category extends Model
     use HasFactory;
 
     protected $guarded = [];
+    public $timestamps = false;
+
 
 //Mutators
 
@@ -18,7 +20,7 @@ class Category extends Model
     {
 
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = str::slug(str::random(5) .''.$this->attributes['title']);
+        $this->attributes['slug'] = str::slug(str::random(5) .'_'.$this->attributes['title']);
     }
 
 
