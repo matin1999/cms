@@ -27,7 +27,7 @@ class Post extends Model
     public function author()
     {
 
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
 
     }
 
@@ -38,7 +38,7 @@ class Post extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Category::class,);
     }
 
     public function image()
