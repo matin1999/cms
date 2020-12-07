@@ -26,7 +26,7 @@ class PostsTable extends Migration
                 ->on('users')
                 ->cascadeOnDelete();
             $table->timestamps();
-            $table->softDeletes('deleted_at');
+            $table->softDeletes();
         });
     }
 

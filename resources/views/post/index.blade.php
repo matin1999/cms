@@ -5,16 +5,16 @@
         <div class="card">
             <div class="card-body">
                 @foreach($posts as $post)
-                    <article>
-                        <tr>
-                            <td>{{$post->id}}</td>
-                            <td>{{$post->title}}</td>
-                            <td>{{$post->slug}}</td>
-                            <td>{{$post->author->name}}</td>
-                            <td>@foreach($post->categories as $category){{$category->title}}@endforeach</td>
-                            <td>@foreach($post->tags as $tag){{$tag->title}}@endforeach</td>
+                    <div class="card-columns">
+                        <tr class="alert">
+                            <td class="badge badge-dark">{{$post->id}}</td>
+                            <td class="badge">{{$post->title}}</td>
+                            <td class="badge badge-info">{{$post->slug}}</td>
+                            <td class="badge badge-primary">{{$post->author->name}}</td>
+                            <td class="badge badge-secondary">@foreach($post->categories as $category){{$category->title}}@endforeach</td>
+                            <td class="badge badge-primary">@foreach($post->tags as $tag)<a cl href="#">{{$tag->title}}</a>@endforeach</td>
                         </tr>
-                    </article>
+                    </div>
                 @endforeach
             </div>
         </div>

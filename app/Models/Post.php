@@ -12,8 +12,6 @@ class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = [];
-
 //Mutators
 
     public function setTitleAttribute($value)
