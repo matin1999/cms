@@ -17,7 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/poststs', 'PostController')->only('index');
-
+Route::resource('/posts', 'PostController')->only('index');
 
 

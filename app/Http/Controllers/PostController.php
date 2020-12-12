@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['tags','categories','image', 'author'])->get();
+        $posts = Post::with(['tags','categories','image', 'author'])->Paginate(15);
         return view('post.index')->with('posts',$posts);
     }
 

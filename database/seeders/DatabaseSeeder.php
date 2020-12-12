@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(20)->create();
-        $categories = Category::factory(50)->create()->random()(function ($category){
+        $categories = Category::factory(50)->create()->each(function ($category){
             Image::factory()->create(['imageable_type' => "App\Models\Category", 'imageable_id'=>$category->id]);
         });
         $tags = Tag::factory(100)->create();
-        Post::factory(2000)->create()->random(function ($post) use ($tags, $categories) {
-            $post->tags()->attach($tags->random(rand(3, 10)));
-            $post->categories()->attach($categories->random(rand(1, 5)));
+        Post::factory(2000)->create()->each(function ($post) use ($tags, $categories) {
+            $post->tags()->attach($tags->random(rand(3, 4)));
+            $post->categories()->attach($categories->random(rand(2,5)));
             Image::factory()->create(['imageable_type' => "App\Models\Post", 'imageable_id'=>$post->id]);
         });
     }

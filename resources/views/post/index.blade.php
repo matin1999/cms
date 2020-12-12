@@ -2,21 +2,37 @@
 
 @section('content')
     <div class="container">
-        <div class="card">
-            <div class="card-body">
-                @foreach($posts as $post)
-                    <div class="card-columns">
-                        <tr class="alert">
-                            <td class="badge badge-dark">{{$post->id}}</td>
-                            <td class="badge">{{$post->title}}</td>
-                            <td class="badge badge-info">{{$post->slug}}</td>
-                            <td class="badge badge-primary">{{$post->author->name}}</td>
-                            <td class="badge badge-secondary">@foreach($post->categories as $category){{$category->title}}@endforeach</td>
-                            <td class="badge badge-primary">@foreach($post->tags as $tag)<a cl href="#">{{$tag->title}}</a>@endforeach</td>
-                        </tr>
-                    </div>
-                @endforeach
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">title</th>
+            <th scope="col">post slug</th>
+            <th scope="col">author name</th>
+            <th scope="col">categories</th>
+            <th scope="col">tags</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($posts as $post)
+            <tr>
+            <tr>
+                <td>{{$post->id}}</td>
+                <td>{{$post->title}}</td>
+                <td>{{$post->slug}}</td>
+                <td>{{$post->author->name}}</td>
+                <td>@foreach($post->categories as $category)<span class="badge badge-primary">{{$category->title}}</span>@endforeach</td>
+                <td>@foreach($post->tags as $tag)<span class="badge badge-secondary">{{$tag->title}}</span>@endforeach</td>
+                <td>
+
+                </td>
+            </tr>
+        @endforeach
+
+        </tbody>
+    </table>
+            <div>
+                {!! $posts->links('vendor.pagination.tailwind') !!}
             </div>
-        </div>
     </div>
 @endsection
