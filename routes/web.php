@@ -16,7 +16,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+//post
 
 Route::resource('/posts', 'PostController')->only('index');
 
+//auth , login ,register , logout
+Route::group([
+    'prefix' => 'auth',
+],function (){
+    Route::get('register', 'AuthController@showRegister');
+    Route::post('register', 'AuthController@register')->name('register');
 
+    Route::get('login', 'AuthController@showLogin')->name('login');
+    Route::post('login', 'AuthController@mobile')->name('mobile');
+//  Route::get('verify', 'AuthController@addpass')->name('add.pass');
+    Route::post('verify', 'AuthController@verifyPass')->name('verify.pass');
+    Route::post('verifycode', 'AuthController@verifyCode')->name('verify.code');
+
+    Route::get('logout', 'AuthController@logout')->name('logout');
+}
+);

@@ -32,7 +32,7 @@
         </tbody>
     </table>
             <div>
-                {!! $posts->links('vendor.pagination.tailwind') !!}
+                {{ $posts->links('pagination::bootstrap-4') }}
             </div>
     </div>
 @endsection
