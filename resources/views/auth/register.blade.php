@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label for="title">ایمیل</label>
                 <input type="email" class="form-control" id="email" name="email">
-                <input type="hidden" name="mobile" value="{{$mobile}}">
+                <input type="hidden" id="mobile" name="mobile" value="{{$mobile}}">
             </div>
 
 {{--            <div class="form-group">--}}

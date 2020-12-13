@@ -55,8 +55,9 @@ class AuthController extends Controller
     }
     public function verifyPass(Request $request)
     {
+
         $user=User::where('mobile', '=', $request->get('mobile'))->first();
-        if ( $request->get('mobile')==$user->password && $user->activation==1) {
+        if (Hash::check($request->get('password'),$user->getAuthPassword())) {
             Auth::login($user);
             return redirect()->route('posts.index')->with('status', 'login');
         }
