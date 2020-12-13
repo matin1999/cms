@@ -70,7 +70,7 @@ class AuthController extends Controller
         $mobile=$request->get('mobile');
 
         if ($cach!= null && $cach==$request->get('code')) {
-            return view('show.register')->with('mobile',$mobile);
+            return view('auth.register')->with('mobile',$mobile);
         }
         else
             return response('not okkkkkkkkkk');

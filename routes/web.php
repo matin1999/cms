@@ -25,7 +25,7 @@ Route::group([
     'prefix' => 'auth',
 ],function (){
     Route::get('register', 'AuthController@showRegister')->name('show.register');
-    Route::post('register/{mobile}', 'AuthController@register')->name('register');
+    Route::post('register', 'AuthController@register')->name('register');
 
     Route::get('login', 'AuthController@showLogin')->name('login');
     Route::post('login', 'AuthController@mobile')->name('mobile');
