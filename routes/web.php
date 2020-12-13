@@ -24,8 +24,8 @@ Route::resource('/posts', 'PostController')->only('index');
 Route::group([
     'prefix' => 'auth',
 ],function (){
-    Route::get('register', 'AuthController@showRegister');
-    Route::post('register', 'AuthController@register')->name('register');
+    Route::get('register', 'AuthController@showRegister')->name('show.register');
+    Route::post('register/{mobile}', 'AuthController@register')->name('register');
 
     Route::get('login', 'AuthController@showLogin')->name('login');
     Route::post('login', 'AuthController@mobile')->name('mobile');
@@ -33,6 +33,11 @@ Route::group([
     Route::post('verify', 'AuthController@verifyPass')->name('verify.pass');
     Route::post('verifycode', 'AuthController@verifyCode')->name('verify.code');
 
-    Route::get('logout', 'AuthController@logout')->name('logout');
+    Route::post('logout', 'AuthController@logout')->name('logout');
 }
 );
+//admin route
+Route::group(['prefix' => 'admin',  'middleware' =>'auth'], function()
+{
+    Route::resource('/users','AdminController');
+});

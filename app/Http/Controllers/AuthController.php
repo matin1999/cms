@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\mobileverify;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,15 +15,16 @@ class AuthController extends Controller
 {
     public function showRegister()
     {
-        return view('auth.register');
+        return route('login');
     }
 
     public function register(RegisterRequest $request)
     {
+
         $user=User::create($request->validated());
 
         if (Auth::attempt(['email'=>$request->email,'password'=>$request->get('password'),]))
-            return redirect()->route('tasks.index');
+            return redirect()->route('posts.index');
         else
             return redirect()->back();
     }
@@ -54,9 +56,9 @@ class AuthController extends Controller
     public function verifyPass(Request $request)
     {
         $user=User::where('mobile', '=', $request->get('mobile'))->first();
-        if (Hash::check($request->get('password'), $user->getAuthPassword())) {
+        if ( $request->get('mobile')==$user->password && $user->activation==1) {
             Auth::login($user);
-            return redirect()->route('posts.index')->with('error', 'login');
+            return redirect()->route('posts.index')->with('status', 'login');
         }
         else
             return back()->with('error','incorrect');
@@ -65,8 +67,10 @@ class AuthController extends Controller
     public function verifyCode(Request $request)
     {
         $cach=Cache::get($request->get('mobile'));
+        $mobile=$request->get('mobile');
+
         if ($cach!= null && $cach==$request->get('code')) {
-            return response('okkkkkkkkkkkkkkk');
+            return view('show.register')->with('mobile',$mobile);
         }
         else
             return response('not okkkkkkkkkk');
@@ -74,10 +78,10 @@ class AuthController extends Controller
 
     public function logout()
     {
-        if
-        (auth()->check());
-        auth()->logout();
-
-        return redirect()->route('login');
+        if (auth()->check()) {
+            auth()->logout();
+            return redirect()->route('login');
+        } else
+            return redirect()->route('login')->with('status', 'you are not login');
     }
 }

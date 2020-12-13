@@ -3,8 +3,8 @@
 @section('content')
     <div class="container">
 
-        @if(session('error'))
-            <p class="text-dander">{{session('error')}}</p>
+        @if(session('status'))
+            <p class="text-dander">{{session('status')}}</p>
         @endif
         <h2>login</h2>
         <form action="{{route('mobile')}}" method="post">
