@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActivityToUsersTable extends Migration
+class AddPublishedToPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddActivityToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-                $table->boolean('activity')->after('mobile')->default(true);
+        Schema::table('posts', function (Blueprint $table) {
+            $table->boolean('published')->after('slug')->default(true);
         });
     }
 

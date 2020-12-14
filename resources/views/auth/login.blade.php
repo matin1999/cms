@@ -4,7 +4,7 @@
     <div class="container">
 
         @if(session('status'))
-            <p class="text-dander">{{session('status')}}</p>
+            <p class="badge badge-danger">{{session('status')}}</p>
         @endif
         <h2>login</h2>
         <form action="{{route('mobile')}}" method="post">

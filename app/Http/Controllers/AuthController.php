@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function showRegister()
+    public function showRegister($mobile)
     {
-        return route('login');
+        return view('auth.register')->with('mobile',$mobile);
     }
 
     public function register(RegisterRequest $request)
@@ -57,12 +57,14 @@ class AuthController extends Controller
     {
 
         $user=User::where('mobile', '=', $request->get('mobile'))->first();
-        if (Hash::check($request->get('password'),$user->getAuthPassword())) {
+        if (Hash::check($request->get('password'),$user->getAuthPassword()) && $user->activity==1) {
             Auth::login($user);
             return redirect()->route('posts.index')->with('status', 'login');
         }
+        if($user->activity!=1)
+            return redirect()->back()->with('status','you are  deactivate by admin');
         else
-            return back()->with('error','incorrect');
+            return redirect()->back()->with('status','incorrect password');
     }
 
     public function verifyCode(Request $request)
@@ -71,7 +73,7 @@ class AuthController extends Controller
         $mobile=$request->get('mobile');
 
         if ($cach!= null && $cach==$request->get('code')) {
-            return view('auth.register')->with('mobile',$mobile);
+            return redirect()->route('show.register',[$mobile]);
         }
         else
             return response('not okkkkkkkkkk');
