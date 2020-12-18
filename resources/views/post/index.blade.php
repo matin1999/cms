@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
     <table class="table table-striped table-light">
+        @if(session('status'))
+            <p class="badge badge-danger">{{session('status')}}</p>
+        @endif
         <thead>
         <tr>
             <th scope="col">id</th>

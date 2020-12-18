@@ -24,6 +24,11 @@
                     <td>
                         <a href="{{route('users.show', $user)}}" class="text-primary">
                             {{$user->name}}
+                            @if($user->activity==1)
+                                <span  class="badge badge-primary">active</span>
+                            @else
+                                <span  class="badge badge-secondary">de active</span>
+                            @endif
                         </a>
                     </td>
                     <td>{{$user->email}}</td>
@@ -35,12 +40,27 @@
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm"
-                                    onclick="return confirm('are you sure ?')">delete user</button>
-
-{{--                            <a class="btn btn-{{$user->inactive_at ? 'secondary' : 'info'}} btn-sm" href="{{route('admin.users.changeStatus', $user)}}"--}}
-{{--                               onclick="return confirm('{{$user->status_destination}} کاربر؟')">{{$user->status_destination}}</a>--}}
-
+                                    onclick="return confirm('are you sure ?')">delete user
+                            </button>
                         </form>
+
+                            <form action="{{route('users.deactive', $user)}}" method="post">
+                                @csrf
+                                @method('post')
+
+                                @if($user->activity==1)
+                                    <button class="btn btn-warning btn-sm"
+                                            onclick="return confirm('are you sure ?')">de activate user
+                                    </button>
+                                @else
+                                    <button class="btn btn-success btn-sm"
+                                            onclick="return confirm('are you sure ?')">activate user
+                                    </button>
+                                @endif
+
+                                {{--                            <a class="btn btn-{{$user->inactive_at ? 'secondary' : 'info'}} btn-sm" href="{{route('admin.users.changeStatus', $user)}}"--}}
+                                {{--                               onclick="return confirm('{{$user->status_destination}} کاربر؟')">{{$user->status_destination}}</a>--}}
+                            </form>
 
                     </td>
 

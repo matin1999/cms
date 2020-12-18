@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\mobileverify;
 use App\Http\Requests\RegisterRequest;
+use App\Jobs\SendWellComeEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +24,10 @@ class AuthController extends Controller
 
         $user=User::create($request->validated());
 
-        if (Auth::attempt(['email'=>$request->email,'password'=>$request->get('password'),]))
-            return redirect()->route('posts.index');
+        if (Auth::attempt(['email'=>$request->email,'password'=>$request->get('password'),])) {
+            SendWellComeEmail::dispatch($user)->delay(now());
+            return redirect()->route('posts.index')->with('status','registered sucsefully');
+        }
         else
             return redirect()->back();
     }

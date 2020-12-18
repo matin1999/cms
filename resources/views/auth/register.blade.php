@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <h1>ثبت نام</h1>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
         <form action="{{route('register')}}" method="post">
             @csrf
             <div class="form-group">

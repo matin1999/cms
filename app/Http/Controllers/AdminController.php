@@ -28,4 +28,13 @@ class AdminController extends Controller
             ->route('users.index')
             ->with('staus', 'user deleted sucesfully');
     }
+
+    public function deactive(User $user)
+    {
+        $user->activity=!$user->activity;
+        $user->save();
+        return redirect()
+            ->route('users.index')
+            ->with('staus', 'user deactivate sucesfully');
+    }
 }

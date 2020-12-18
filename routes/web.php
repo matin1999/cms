@@ -40,4 +40,5 @@ Route::group([
 Route::group(['prefix' => 'admin',  'middleware' =>'auth'], function()
 {
     Route::resource('/users','AdminController');
+    Route::post('/users/{user}','AdminController@deactive')->name('users.deactive');
 });
