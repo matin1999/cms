@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
+use App\Jobs\SendDeletedPostNotify;
+use App\Models\Category;
+use App\Models\Image;
 use App\Models\Post;
+use App\Models\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -14,8 +22,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['tags','categories','image', 'author'])->Paginate(15);
-        return view('post.index')->with('posts',$posts);
+
+        $posts = Post::with(['tags','categories','image', 'author'])->latest()->Paginate(15);
+        return view('home')->with('posts',$posts);
     }
 
     /**
@@ -25,7 +34,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $tags=Tag::all()->pluck('id','title');
+        $categories=Category::all()->pluck('id','title');
+        return view('post.create',compact('categories',$categories))->with('tags',$tags);
     }
 
     /**
@@ -34,9 +45,22 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        //
+        $post = auth()->user()->posts()->create($request->only('title','content','published'));
+        $post->tags()->sync($request->get('tags'));
+        $post->categories()->sync($request->get('categories'));
+
+        $path = $request->file('image')->storePublicly('post');
+        Image::create([
+            'title' => $request->title,
+            'alt' => "This is the image of post $request->title",
+            'path' => $path,
+            'imageable_id' => $post->id,
+            'imageable_type' => Post::class,
+        ]);
+        return redirect()->route('home')->with('status','post published');
+
     }
 
     /**
@@ -45,9 +69,25 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+
+        return view('post.show')->with('post',$post);
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function draft(Post $post)
+    {
+
+        $post->published=!$post->published;
+        $post->save();
+        return redirect()
+            ->back()
+            ->with('status', 'post drafted sucesfully');
     }
 
     /**
@@ -79,8 +119,29 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+
+        Storage::delete($post->image->path);
+        $post->image()->delete();
+        $post->delete();
+        SendDeletedPostNotify::dispatch($post);
+
+
+        return redirect()->back()->with('status', '');
+    }
+
+    public function restore(Post $post)
+    {
+        Post::withTrashed()->find($post)->restore();
+
+        return $this->back($post);
+    }
+    public function terminate(Post $post)
+    {
+        Post::withTrashed()->find($post)->forceDelete();
+
+        return $this->back($post);
+
     }
 }

@@ -72,9 +72,37 @@
                     @endguest
                 </ul>
             </div>
+
+        </div>
+
+    </nav>
+{{--    <div class="navbar-collapse">--}}
+{{--        <nav aria-label="breadcrumb">--}}
+{{--            <ol class="breadcrumb">--}}
+{{--                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>--}}
+{{--                <li class="breadcrumb-item"><a href="{{route('tags.index')}}">Tags</a></li>--}}
+{{--                <li class="breadcrumb-item"><a href="{{route('categories.index')}}">Categories</a></li>--}}
+{{--            </ol>--}}
+{{--        </nav>--}}
+{{--    </div>--}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route('home')}}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('tags.index')}}">Tags</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('categories.index')}}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('dashbord')}}">Dashbord</a>
+                </li>
+            </ul>
         </div>
     </nav>
-
     <main class="py-4">
         @yield('content')
     </main>

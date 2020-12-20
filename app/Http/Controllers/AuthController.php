@@ -56,7 +56,7 @@ class AuthController extends Controller
     {
         return view('auth.pass');
     }
-    public function verifyPass(Request $request)
+    public function VerifyPassAndLogin(Request $request)
     {
 
         $user=User::where('mobile', '=', $request->get('mobile'))->first();

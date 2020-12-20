@@ -4,13 +4,13 @@
     <div class="container">
     <table class="table table-striped table-light">
         @if(session('status'))
-            <p class="badge badge-danger">{{session('status')}}</p>
+            <p class="alert alert-primary">{{session('status')}}</p>
         @endif
         <thead>
         <tr>
             <th scope="col">id</th>
             <th scope="col">title</th>
-            <th scope="col">post slug</th>
+            <th scope="col">Manage</th>
             <th scope="col">author name</th>
             <th scope="col">categories</th>
             <th scope="col">tags</th>
@@ -21,8 +21,42 @@
             <tr>
             <tr>
                 <td>{{$post->id}}</td>
-                <td>{{$post->title}}</td>
-                <td>{{$post->slug}}</td>
+                <td><a href="{{route('posts.show',$post)}}" class="text-primary">{{$post->title}}</a></td>
+                <td>
+                    @if($post->user_id == auth()->id())
+
+                    @if(is_null($post->deleted_at))
+                            <div class="card-footer">
+                                    <form action="{{route('posts.destroy', $post)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm"
+                                                onclick="return confirm('are you sure ?')">Delete Post
+                                        </button>
+                                    </form>
+                            </div>
+        @else
+                        <form action="{{route('posts.destroy', $post->id)}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('are you sure ?')">terminate Post
+                            </button>
+                        </form>
+
+                        <form action="{{route('posts.restore', $post->id)}}" method="post">
+                            @csrf
+                            @method('POST')
+                            <button class="btn btn-info btn-sm"
+                                    onclick="return confirm('are you sure ?')">restore Post
+                            </button>
+                        </form>
+        @endif
+
+        @endif
+    </div>
+
+                </td>
                 <td>{{$post->author->name}}</td>
                 <td>@foreach($post->categories as $category)<span class="badge badge-primary">{{$category->title}}</span>@endforeach</td>
                 <td>@foreach($post->tags as $tag)<span class="badge badge-secondary">{{$tag->title}}</span>@endforeach</td>

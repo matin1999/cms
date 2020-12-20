@@ -11,7 +11,7 @@ use function GuzzleHttp\Psr7\str;
 class Post extends Model
 {
     use HasFactory, SoftDeletes;
-
+protected $guarded=[];
 //Mutators
 
     public function setTitleAttribute($value)
