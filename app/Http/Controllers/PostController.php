@@ -122,8 +122,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
 
-        Storage::delete($post->image->path);
-        $post->image()->delete();
         $post->delete();
         SendDeletedPostNotify::dispatch($post);
 
@@ -133,15 +131,20 @@ class PostController extends Controller
 
     public function restore(Post $post)
     {
+        dd($post);
+
         Post::withTrashed()->find($post)->restore();
 
-        return $this->back($post);
+        return redirect()->back();
     }
     public function terminate(Post $post)
     {
+        dd($post);
+        Storage::delete($post->image->path);
+        $post->image()->delete();
         Post::withTrashed()->find($post)->forceDelete();
 
-        return $this->back($post);
+        return redirect()->back();
 
     }
 }

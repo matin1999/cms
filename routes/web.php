@@ -60,8 +60,8 @@ Route::group(['middleware' =>'auth'], function()
     Route::get('/dashbord','UserDashbordController@index')->name('dashbord');
 
     Route::get('/user/{user}','UserDashbordController@UserPost')->name('user.post');
-    Route::post('/posts/{post}','UserDashbordController@terminate')->name('posts.restore');
-    Route::post('/posts/{post}','UserDashbordController@restore')->name('posts.restore');
+    Route::delete('/user/{post}','PostController@terminate')->name('posts.terminate');
+    Route::post('/user/{post}','PostController@restore')->name('posts.restore');
 
 
 });
