@@ -51,7 +51,7 @@ class PostController extends Controller
         $post->tags()->sync($request->get('tags'));
         $post->categories()->sync($request->get('categories'));
 
-        $path = $request->file('image')->storePublicly('post');
+        $path = $request->file('image')->store('public/post');
         Image::create([
             'title' => $request->title,
             'alt' => "This is the image of post $request->title",
@@ -129,21 +129,18 @@ class PostController extends Controller
         return redirect()->back()->with('status', '');
     }
 
-    public function restore(Post $post)
+    public function restore($post)
     {
-        dd($post);
-
         Post::withTrashed()->find($post)->restore();
 
         return redirect()->back();
     }
-    public function terminate(Post $post)
+    public function terminate($post)
     {
-        dd($post);
+        $post=Post::withTrashed()->find($post);
         Storage::delete($post->image->path);
         $post->image()->delete();
-        Post::withTrashed()->find($post)->forceDelete();
-
+        $post->forceDelete();
         return redirect()->back();
 
     }

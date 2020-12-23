@@ -42,7 +42,7 @@
                                 </form>
                             </div>
                         @else
-                            <form action="{{route('posts.terminate',$post)}}" method="post">
+                            <form action="{{route('posts.terminate',$post->id)}}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm"
@@ -50,7 +50,7 @@
                                 </button>
                             </form>
 
-                            <form action="{{route('posts.restore', $post)}}" method="post">
+                            <form action="{{route('posts.restore', $post->id)}}" method="post">
                                 @csrf
                                 @method('POST')
                                 <button class="btn btn-info btn-sm"

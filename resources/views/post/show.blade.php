@@ -6,7 +6,7 @@
             <p class="alert alert-primary">{{session('status')}}</p>
         @endif
         <div class="row justify-content-center">
-            <img src="{{ url($post->image->path) }}"/>
+            <img src="{{ is_link($post->image->path) ? $post->image->path : asset(str_replace('public','storage' ,$post->image->path)) }}"/>
         </div>
 
         <div>
