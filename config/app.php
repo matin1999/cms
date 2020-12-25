@@ -139,6 +139,8 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Hekmatinasser\Verta\VertaServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
