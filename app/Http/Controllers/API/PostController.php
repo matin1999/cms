@@ -2,56 +2,61 @@
 
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
+use App\Repositories\PostInterface;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
     protected $user;
+    protected $post;
 
-    public function __construct()
+    public function __construct(PostInterface $post)
     {
         $this->user = JWTAuth::parseToken()->authenticate();
+        $this->post = $post;
+
     }
 
     public function index()
     {
-        return $this->user
-            ->posts()
-            ->get(['title', 'content', 'quantity'])
-            ->toArray();
+//        return $this->user->post->get();
+        return $this->post->where($col='user_id',$this->user->id)->get();
+
     }
     public function show($id)
     {
-        $product = $this->user->products()->find($id);
+        $post = $this->post->where($col='user_id',$this->user->id)->find($id);
 
-        if (!$product) {
+        if (!$post) {
             return response()->json([
                 'success' => false,
                 'message' => 'Sorry, product with id ' . $id . ' cannot be found'
             ], 400);
         }
 
-        return $product;
+        return $post;
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'price' => 'required|integer',
-            'quantity' => 'required|integer'
-        ]);
+//        $this->validate($request, [
+//            'name' => 'required',
+//            'price' => 'required|integer',
+//            'quantity' => 'required|integer'
+//        ]);
+//
+//        $product = new Product();
+//        $product->name = $request->name;
+//        $product->price = $request->price;
+//        $product->quantity = $request->quantity;
+        $user = $this->post->create($request->validated());
 
-        $product = new Product();
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity;
-
-        if ($this->user->products()->save($product))
+        if ($this->user->products()->save($post))
             return response()->json([
                 'success' => true,
-                'product' => $product
+                'product' => $post
             ]);
         else
             return response()->json([
@@ -88,16 +93,16 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-        $product = $this->user->products()->find($id);
+        $post = $this->post->find($id);
 
-        if (!$product) {
+        if (!$post) {
             return response()->json([
                 'success' => false,
                 'message' => 'Sorry, product with id ' . $id . ' cannot be found'
             ], 400);
         }
 
-        if ($product->delete()) {
+        if ($this->post->deleteById($id)) {
             return response()->json([
                 'success' => true
             ]);

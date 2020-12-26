@@ -410,6 +410,11 @@ class BaseRepository implements BaseRepositoryInterface
         return $this;
     }
 
+    public function find($id)
+    {
+        return $this->model->where('id',$id)->first();
+    }
+
 
     /**
      * Reset the query clause parameter arrays

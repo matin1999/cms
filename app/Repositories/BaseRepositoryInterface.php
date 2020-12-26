@@ -39,4 +39,6 @@ interface BaseRepositoryInterface
 
     public function with($relations);
 
+    public function find($id);
+
 }
