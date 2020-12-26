@@ -5,16 +5,19 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Repositories\AuthInterface;
 use http\Client\Response;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    private $auth;
     public $loginAfterSignUp = true;
 
-    public function __construct()
+    public function __construct(AuthInterface $auth)
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->auth = $auth;
     }
 
     /**
@@ -25,27 +28,26 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+//        $user = new User();
+//        $user->name = $request->name;
+//        $user->email = $request->email;
+//        $user->password = bcrypt($request->password);
+//        $user->save();
+        $user = $this->auth->create($request->validated());
 
         if ($this->loginAfterSignUp) {
             return $this->login($request);
         }
-
         return response()->json([
             'success' => true,
             'data' => $user
         ], Response::HTTP_OK);
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $credentials = request(['email', 'password']);
-
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -59,7 +61,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth('api')->user());
     }
 
     /**
@@ -69,7 +71,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth('api')->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -87,7 +89,7 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
