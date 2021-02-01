@@ -27,11 +27,10 @@
             <h3>content</h3>
             <p class="card-body">{{$post->content}}</p>
         </div>
-    @if(auth()->user()->role('admin') || auth()->id()==$post->author->id)
+    @if(auth()->user()->role='admin' || auth()->id()==$post->author->id)
         <form action="{{route('post.draft', $post)}}" method="post">
             @csrf
             @method('post')
-
             @if($post->published==1)
                 <button class="btn btn-warning btn-lg btn-block"
                         onclick="return confirm('are you sure ?')">draft

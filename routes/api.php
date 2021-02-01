@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('auth/login', [\App\Http\Controllers\API\AuthController::class,'login']);
-Route::post('auth/register', [\App\Http\Controllers\API\AuthController::class,'register']);
+Route::post('auth/login', [AuthController::class,'login']);
+Route::post('auth/register', [AuthController::class,'register']);
 
 Route::group([
 
@@ -29,9 +31,9 @@ Route::group([
 
 ], function ($router) {
 //user
-    Route::post('logout', [\App\Http\Controllers\API\AuthController::class,'logout']);
-    Route::post('refresh', [\App\Http\Controllers\API\AuthController::class,'refresh']);
-    Route::post('me', [\App\Http\Controllers\API\AuthController::class,'me']);
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class,'me']);
 });
 
 Route::group([
@@ -40,10 +42,10 @@ Route::group([
 
 ], function ($router) {
 
-    Route::get('posts', [\App\Http\Controllers\API\PostController::class,'index']);
-    Route::get('posts/{id}', [\App\Http\Controllers\API\PostController::class,'show']);
-    Route::post('posts', [\App\Http\Controllers\API\PostController::class,'store']);
-    Route::put('posts/{id}', [\App\Http\Controllers\API\PostController::class,'update']);
-    Route::delete('posts/{id}', [\App\Http\Controllers\API\PostController::class,'destroy']);
+    Route::get('posts', [PostController::class,'index']);
+    Route::get('posts/{id}', [PostController::class,'show']);
+    Route::post('posts', [PostController::class,'store']);
+    Route::put('posts/{id}', [PostController::class,'update']);
+    Route::delete('posts/{id}', [PostController::class,'destroy']);
 
 });

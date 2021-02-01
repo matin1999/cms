@@ -56,7 +56,7 @@ class PostController extends Controller
             'title' => $request->title,
             'alt' => "This is the image of post $request->title",
             'path' => $path,
-            'imageable_id' => $post->id,
+            'imageable_id' => auth()->id(),
             'imageable_type' => Post::class,
         ]);
         return redirect()->route('home')->with('status','post published');

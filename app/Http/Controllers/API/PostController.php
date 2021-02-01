@@ -51,7 +51,7 @@ class PostController extends Controller
 //        $product->name = $request->name;
 //        $product->price = $request->price;
 //        $product->quantity = $request->quantity;
-        $user = $this->post->create($request->validated());
+        $post = $this->post->create($request->validated());
 
         if ($this->user->products()->save($post))
             return response()->json([
@@ -65,7 +65,7 @@ class PostController extends Controller
             ], 500);
     }
 
-    public function update(Request $request, $id)
+    public function update($request, $id)
     {
         $product = $this->user->products()->find($id);
 
@@ -76,7 +76,7 @@ class PostController extends Controller
             ], 400);
         }
 
-        $updated = $product->fill($request->all())
+        $updated = $post->fill($request->all())
             ->save();
 
         if ($updated) {
